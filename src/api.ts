@@ -8,14 +8,16 @@ export const getDevices = async (): Promise<Device[]> => {
 export const createDevice = async (device: Partial<Device>) => {
   const response = await fetch(`/devices`, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(device),
   })
   return response.json()
 }
 
-export const updateDevice = async (device: Device) => {
-  const response = await fetch(`/devices/${device.id}`, {
+export const updateDevice = async (id: string, device: Partial<Device>) => {
+  const response = await fetch(`/devices/${id}`, {
     method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(device),
   })
   return response.json()

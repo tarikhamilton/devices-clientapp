@@ -1,4 +1,4 @@
-import { Device } from '../types'
+import { Device, DeviceType, deviceTypeOptions } from '../types'
 import { DeleteButton, SecondaryButton } from './forms'
 
 export default function DeviceListItem({
@@ -12,7 +12,9 @@ export default function DeviceListItem({
     <article className="bg-white flex items-center justify-between p-3 mb-4 shadow-sm text-sm md:text-base">
       <div className="flex flex-col flex-grow md:flex-row">
         <h1 className="md:w-2/5 font-bold">{system_name}</h1>
-        <span className="md:w-2/5">{type}</span>
+        <span className="md:w-2/5">
+          {deviceTypeOptions?.find((d) => d.value === type)?.label}
+        </span>
         <span className="md:w-1/5">{hdd_capacity} GB</span>
       </div>
       <div className="grid md:grid-cols-2 gap-2">

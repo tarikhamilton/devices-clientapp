@@ -1,3 +1,4 @@
+import { FC, PropsWithChildren } from 'react'
 import tw from 'twin.macro'
 
 export const Button = tw.button`uppercase font-bold text-xs text-white px-3 md:px-4 py-1 md:py-2 rounded-sm border-solid border transition`
@@ -11,3 +12,15 @@ export const SecondaryButton = tw(
 export const DeleteButton = tw(Button)`bg-ninja-red border-ninja-red`
 
 export const Label = tw.span`block text-sm font-bold mb-1`
+
+export const TextInput = tw.input`block mb-2 p-2 border rounded-sm`
+
+export const LabelWithInput: FC<PropsWithChildren<{ label: string }>> = ({
+  label,
+  children,
+}) => (
+  <label className="block mb-8">
+    <Label>{label}</Label>
+    {children}
+  </label>
+)

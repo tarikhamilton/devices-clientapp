@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Select, { ActionMeta } from 'react-select'
-import { getDevices, removeDevice } from './api'
+import { createDevice, getDevices, removeDevice, updateDevice } from './api'
 import { Label, PrimaryButton } from './components/forms'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { Device, DeviceType } from './types'
+import { Device, deviceTypeOptions } from './types'
 import './fade.css'
 import DeviceListItem from './components/DeviceListItem'
-import { enumToOptions } from './util'
-import { ChangeEvent } from 'react'
-
-const CreateDevice = () => <div>Create</div>
-const EditDevice = () => <div>Edit</div>
+import DeviceForm from './components/DeviceForm'
 
 function App() {
   const [devices, setDevices] = useState<Device[]>([])
@@ -19,7 +15,11 @@ function App() {
   const [filterBy, setFilterBy] = useState<any[]>([])
   const [ModalContent, setModalContent] = useState<() => JSX.Element>()
 
-  const deviceTypeOptions = enumToOptions(DeviceType)
+  const handleSave = (id?: string) => async (device: Partial<Device>) => {
+    await (id ? updateDevice(id, device) : createDevice(device))
+    getAndSetDevices()
+    setShowModal(false)
+  }
 
   const getAndSetDevices = async () => {
     const data = await getDevices()
@@ -56,13 +56,18 @@ function App() {
             </label>
             <label>
               <Label>Sort By</Label>
-              <Select></Select>
+              <Select options={[{ label: 'A-Z', value: 'hi' }]}></Select>
             </label>
           </div>
           <PrimaryButton
             className="mb-0.5"
             onClick={() => {
-              setModalContent(() => CreateDevice)
+              setModalContent(() => () =>
+                DeviceForm({
+                  onSave: handleSave,
+                  onClose: () => setShowModal(false),
+                }),
+              )
               setShowModal(true)
             }}
           >
@@ -82,7 +87,13 @@ function App() {
                 <DeviceListItem
                   {...device}
                   onEditClick={() => {
-                    setModalContent(() => EditDevice)
+                    setModalContent(() => () =>
+                      DeviceForm({
+                        device,
+                        onSave: handleSave,
+                        onClose: () => setShowModal(false),
+                      }),
+                    )
                     setShowModal(true)
                   }}
                   onRemoveClick={async () => {

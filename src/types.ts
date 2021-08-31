@@ -1,3 +1,5 @@
+import { enumToOptions } from './util'
+
 export interface Device {
   id: string
   /** System name. */
@@ -12,3 +14,5 @@ export enum DeviceType {
   WINDOWS_SERVER = 'Windows Server',
   MAC = 'Mac',
 }
+
+export const deviceTypeOptions = enumToOptions(DeviceType)
