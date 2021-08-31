@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Device Dashboard
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Using with Data
+
+Clone the [server component](https://github.com/NinjaRMM/devicesTask_serverApp) and run it locally. Make sure port 3000 is available. Once the server is running, run this app in development (`yarn start`) or serve the development build (create with `yarn build`).
+
+```shell
+> git clone git@github.com:NinjaRMM/devicesTask_serverApp.git
+> cd devicesTask_serverApp && yarn install
+> yarn start
+```
 
 ## Available Scripts
 
@@ -9,7 +19,7 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
