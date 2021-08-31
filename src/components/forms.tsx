@@ -9,3 +9,5 @@ export const SecondaryButton = tw(
 )`bg-transparent text-ninja-blue hover:bg-white`
 
 export const DeleteButton = tw(Button)`bg-ninja-red border-ninja-red`
+
+export const Label = tw.span`block text-sm font-bold mb-1`

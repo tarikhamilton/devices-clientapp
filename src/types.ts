@@ -6,3 +6,9 @@ export interface Device {
   /** HDD capacity. */
   hdd_capacity: number
 }
+
+export enum DeviceType {
+  WINDOWS_WORKSTATION = 'Windows Workstation',
+  WINDOWS_SERVER = 'Windows Server',
+  MAC = 'Mac',
+}

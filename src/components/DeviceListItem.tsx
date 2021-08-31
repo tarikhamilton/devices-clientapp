@@ -1,5 +1,5 @@
 import { Device } from '../types'
-import { DeleteButton, SecondaryButton } from './buttons'
+import { DeleteButton, SecondaryButton } from './forms'
 
 export default function DeviceListItem({
   system_name,
