@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
+import ReactModal from 'react-modal'
 import 'tailwindcss/tailwind.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+
+ReactModal.setAppElement('#root')
 
 ReactDOM.render(
   <React.StrictMode>
