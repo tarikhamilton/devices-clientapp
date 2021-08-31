@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import Select, { ActionMeta } from 'react-select'
 import { createDevice, getDevices, removeDevice, updateDevice } from './api'
-import { Label, PrimaryButton } from './components/forms'
+import { Label, LabelWithInput, PrimaryButton } from './components/forms'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { Device, deviceTypeOptions } from './types'
 import './fade.css'
@@ -13,6 +13,7 @@ function App() {
   const [devices, setDevices] = useState<Device[]>([])
   const [showModal, setShowModal] = useState(false)
   const [filterBy, setFilterBy] = useState<any[]>([])
+  const [sortBy, setSortBy] = useState<string>('')
   const [ModalContent, setModalContent] = useState<() => JSX.Element>()
 
   const handleSave = (id?: string) => async (device: Partial<Device>) => {
@@ -31,7 +32,7 @@ function App() {
   }, [])
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <main className="container mx-auto py-8 px-4">
       <Modal isOpen={!!showModal} onRequestClose={() => setShowModal(false)}>
         {ModalContent && <ModalContent />}
       </Modal>
@@ -41,23 +42,28 @@ function App() {
         </h1>
         <div className="flex items-end justify-between mb-4">
           <div className="flex-grow grid grid-cols-2 gap-2 mr-2">
-            <label>
-              <Label>Filter By</Label>
+            <LabelWithInput label="Filter By" noMargin>
               <Select
                 isMulti
                 options={deviceTypeOptions}
-                onChange={(
-                  options,
-                  option: ActionMeta<{ label: string; value: string }>,
-                ) => {
+                onChange={(options) => {
                   setFilterBy(options.map(({ value }) => value))
                 }}
               ></Select>
-            </label>
-            <label>
-              <Label>Sort By</Label>
-              <Select options={[{ label: 'A-Z', value: 'hi' }]}></Select>
-            </label>
+            </LabelWithInput>
+            <LabelWithInput label="Sort By" noMargin>
+              <Select
+                defaultValue={{ label: 'None', value: '' }}
+                options={[
+                  { label: 'None', value: '' },
+                  { label: 'HDD - Lowest to Highest', value: 'hdd' },
+                  { label: 'System Name - A-Z', value: 'system' },
+                ]}
+                onChange={(option) => {
+                  setSortBy(option!.value)
+                }}
+              ></Select>
+            </LabelWithInput>
           </div>
           <PrimaryButton
             className="mb-0.5"
@@ -75,10 +81,21 @@ function App() {
           </PrimaryButton>
         </div>
       </header>
-      <section className="">
+      <section>
         <TransitionGroup>
           {devices
-            // .sort((a, b) => a - b)
+            .sort((a, b) => {
+              switch (sortBy) {
+                case 'system':
+                  if (a.system_name < b.system_name) return -1
+                  if (a.system_name > b.system_name) return 1
+                  return 0
+                case 'hdd':
+                  return a.hdd_capacity - b.hdd_capacity
+                default:
+                  return 0
+              }
+            })
             .filter(({ type }) =>
               filterBy.length ? filterBy.includes(type) : true,
             )
@@ -105,7 +122,7 @@ function App() {
             ))}
         </TransitionGroup>
       </section>
-    </div>
+    </main>
   )
 }
 
